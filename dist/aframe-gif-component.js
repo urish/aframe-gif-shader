@@ -42,11 +42,11 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	var _gifsparser = __webpack_require__(1);
 
@@ -106,6 +106,13 @@
 	    this.__cnv.height = 2;
 	    this.__ctx = this.__cnv.getContext('2d');
 	    this.__texture = new THREE.Texture(this.__cnv); //renders straight from a canvas
+	    if (data.repeat) {
+	      this.__texture.wrapS = THREE.RepeatWrapping;
+	      this.__texture.wrapT = THREE.RepeatWrapping;
+	      this.__texture.repeat.set(data.repeat.x, data.repeat.y);
+	      this.__texture.magFilter = THREE.NearestFilter;
+	      this.__texture.minFilter = THREE.LinearMipMapLinearFilter;
+	    }
 	    this.__material = {};
 	    this.__reset();
 	    this.material = new THREE.MeshBasicMaterial({ map: this.__texture });
@@ -203,8 +210,8 @@
 	   * @param {Object} data - Material component data.
 	   */
 	  __updateTexture: function __updateTexture(data) {
-	    var src = data.src;
-	    var autoplay = data.autoplay;
+	    var src = data.src,
+	        autoplay = data.autoplay;
 
 	    /* autoplay */
 
@@ -264,20 +271,18 @@
 
 	    /* if there is message, create error data */
 	    if (message) {
-	      (function () {
-	        var srcData = gifData[src];
-	        var errData = createError(message, src);
-	        /* callbacks */
-	        if (srcData && srcData.callbacks) {
-	          srcData.callbacks.forEach(function (cb) {
-	            return cb(errData);
-	          });
-	        } else {
-	          cb(errData);
-	        }
-	        /* overwrite */
-	        gifData[src] = errData;
-	      })();
+	      var srcData = gifData[src];
+	      var errData = createError(message, src);
+	      /* callbacks */
+	      if (srcData && srcData.callbacks) {
+	        srcData.callbacks.forEach(function (cb) {
+	          return cb(errData);
+	        });
+	      } else {
+	        cb(errData);
+	      }
+	      /* overwrite */
+	      gifData[src] = errData;
 	    }
 	  },
 
@@ -321,9 +326,9 @@
 	        /* parse data */
 	        (0, _gifsparser.parseGIF)(arr, function (times, cnt, frames) {
 	          /* store data */
-	          var newData = { status: 'success', src: src, times: times, cnt: cnt, frames: frames, timestamp: Date.now() };
-	          /* callbacks */
-	          if (srcData.callbacks) {
+	          var newData = { status: 'success', src: src, times: times, cnt: cnt, frames: frames, timestamp: Date.now()
+	            /* callbacks */
+	          };if (srcData.callbacks) {
 	            srcData.callbacks.forEach(function (cb) {
 	              return cb(newData);
 	            });
@@ -514,10 +519,10 @@
 	   * @param {array} frames - array of each image
 	   */
 	  __ready: function __ready(_ref) {
-	    var src = _ref.src;
-	    var times = _ref.times;
-	    var cnt = _ref.cnt;
-	    var frames = _ref.frames;
+	    var src = _ref.src,
+	        times = _ref.times,
+	        cnt = _ref.cnt,
+	        frames = _ref.frames;
 
 	    log('__ready');
 	    this.__textureSrc = src;
@@ -562,9 +567,9 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -657,5 +662,5 @@
 	  }
 	};
 
-/***/ }
+/***/ })
 /******/ ]);
