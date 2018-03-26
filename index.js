@@ -58,7 +58,9 @@ AFRAME.registerShader('gif', {
     if (data.repeat) {
       this.__texture.wrapS = THREE.RepeatWrapping;
       this.__texture.wrapT = THREE.RepeatWrapping;
-      this.__texture.repeat.set( data.repeat.x, data.repeat.y );	
+      this.__texture.repeat.set( data.repeat.x, data.repeat.y );
+      this.__texture.magFilter = THREE.NearestFilter;
+      this.__texture.minFilter = THREE.LinearMipMapLinearFilter;
     }
     this.__material = {}
     this.__reset()
