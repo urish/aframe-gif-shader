@@ -1,7 +1,7 @@
 {
-  "name": "aframe-gif-shader",
+  "name": "aframe-gif-shader-pixelated",
   "version": "0.2.0",
-  "description": "A shader to display GIF for A-Frame VR.",
+  "description": "A shader to display GIF for A-Frame VR (pixelated scaling).",
   "main": "dist/aframe-gif-shader.js",
   "scripts": {
     "build": "webpack -p examples/main.js examples/build.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mayognaise/aframe-gif-shader.git"
+    "url": "git+https://github.com/urish/aframe-gif-shader.git"
   },
   "keywords": [
     "aframe",
